@@ -1,5 +1,10 @@
 import os
 import yaml
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
+
 from easydict import EasyDict as edict
 
 class YamlParser(edict):
@@ -20,7 +25,7 @@ class YamlParser(edict):
     
     def merge_from_file(self, config_file):
         with open(config_file, 'r') as fo:
-            self.update(yaml.load(fo.read()))
+            self.update(yaml.load(fo.read(), Loader=Loader))
 
     
     def merge_from_dict(self, config_dict):
